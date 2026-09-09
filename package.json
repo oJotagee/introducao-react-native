@@ -2,8 +2,10 @@
   "name": "introducao-react-native",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "packageManager": "bun@1.3.14",
   "dependencies": {
     "@expo/ui": "~57.0.17",
+    "@react-native-vector-icons/material-icons": "^13.1.4",
     "expo": "~57.0.21",
     "expo-constants": "~57.0.17",
     "expo-device": "~57.0.1",
