@@ -10,30 +10,46 @@ import { Button } from "@/components/button"
 import { Categories } from "@/components/categories"
 import { Input } from "@/components/input"
 
+import { linkStorage } from "@/storage/link-storage"
+
 export default function Add() {
   const [name, setName] = useState("")
   const [url, setUrl] = useState("")
   const [category, setCategory] = useState("")
 
-  function handleAdd() {
-    if(!category) {
-      Alert.alert("Categoria", "Selecione uma categoria")
-      return
-    }
+  async function handleAdd() {
+    try {
+      if(!category) {
+        Alert.alert("Categoria", "Selecione uma categoria")
+        return
+      }
 
-    if(!name.trim()) {
-      Alert.alert("Nome", "Digite um nome")
-      return
-    }
+      if(!name.trim()) {
+        Alert.alert("Nome", "Digite um nome")
+        return
+      }
 
-    if(!url.trim()) {
-      Alert.alert("URL", "Digite uma URL")
-      return
-    }
+      if(!url.trim()) {
+        Alert.alert("URL", "Digite uma URL")
+        return
+      }
 
-    console.log("Name:", name)
-    console.log("URL:", url)
-    console.log("Category:", category)
+      await linkStorage.save({
+        id: new Date().getTime().toString(),
+        name,
+        url,
+        category,
+      })
+
+      Alert.alert("Sucesso", "Link adicionado com sucesso", [
+        {
+          text: "OK",
+          onPress: () => router.back()
+        }
+      ])
+    } catch (error) {
+      Alert.alert("Erro", "Ocorreu um erro ao salvar o link")
+    }
   }
 
   return (
@@ -60,7 +76,9 @@ export default function Add() {
         <Input 
           placeholder="URL"
           value={url}
-          onChangeText={setUrl} 
+          onChangeText={setUrl}
+          autoCorrect={false}
+          autoCapitalize="none"
         />
         <Button title="Adicionar" onPress={handleAdd} />
       </View>
